@@ -3,10 +3,12 @@ import {
   Column,
   PrimaryGeneratedColumn,
   BeforeInsert,
+  OneToMany,
 } from "typeorm"
 import { genSalt, hash } from "bcrypt"
 import NotFoundError from "./errors/NotFoundError"
 import getRepository from "../database/getRepository"
+import { Character } from "./Character"
 
 interface IUsuarioWithoutPass extends Exclude<User, "password"> { }
 
@@ -39,6 +41,9 @@ class User {
 
   @Column({ default: false })
   adm: boolean
+
+  @OneToMany(() => Character, (character) => character.user)
+  characters: Character[]
 
   @BeforeInsert()
   async hashPassword() {

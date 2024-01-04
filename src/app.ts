@@ -4,8 +4,10 @@ import cors from "cors"
 import {
   UserRouter,
   AuthRouter,
+  AttributeRouter,
+  CharacterRouter
 } from "./routes"
-import { datasource, datasourceTest } from "./database/ormconfig"
+import { datasource } from "./database/ormconfig"
 import NotFoundError from "./entities/errors/NotFoundError"
 import ValidationError from "./entities/errors/ValidationError"
 import UnauthorizedError from "./entities/errors/UnauthorizedError"
@@ -27,7 +29,7 @@ class App {
 
 
     if (NODE_ENV !== 'test') {
-      datasourceTest
+      datasource
         .initialize()
         .then(() => {
           console.log("Data Source has been initialized!")
@@ -54,6 +56,8 @@ class App {
     this.express.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec))
     this.express.use("/", container.resolve(AuthRouter).router)
     this.express.use("/users", container.resolve(UserRouter).router)
+    this.express.use("/attributes", container.resolve(AttributeRouter).router)
+    this.express.use("/characters", container.resolve(CharacterRouter).router)
   }
 
   private errorHandling() {
