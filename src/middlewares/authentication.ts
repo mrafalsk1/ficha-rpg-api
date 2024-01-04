@@ -1,19 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import * as jwt from "jsonwebtoken"
 import { JWT_SECRET } from "../secret/secret"
-
-interface User {
-  id: number
-  email: string
-}
-
-declare global {
-  namespace Express {
-    interface Request {
-      user?: User
-    }
-  }
-}
+import { RequestUser } from "../@types/express"
 
 function verifyToken(req: Request, res: Response, next: NextFunction) {
   if (!req.headers.authorization) {
@@ -26,7 +14,7 @@ function verifyToken(req: Request, res: Response, next: NextFunction) {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET)
-    req.user = decoded as User
+    req.user = decoded as RequestUser
     next()
   } catch (error) {
     return res.status(403).json({ message: "Token inválido" })

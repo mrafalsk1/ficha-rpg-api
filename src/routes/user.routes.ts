@@ -34,9 +34,9 @@ export class UserRouter {
  *             schema:
  *               $ref: '#/components/schemas/User'
  *       400:
- *        description: Invalid username/password
+ *        $ref: '#/components/responses/ValidationError'
  *       403:
- *        description: Name already exists
+ *        $ref: '#/components/responses/ForbiddenError'
  */
     this.router.post("/", validate(CreateUserSchema), this.userController.create.bind(this.userController))
   }

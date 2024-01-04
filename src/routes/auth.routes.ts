@@ -42,7 +42,9 @@ export class AuthRouter {
          *                 accessToken:
          *                   type: string
          *       400:
-         *        description: Invalid username/password
+         *        $ref: '#/components/responses/ValidationError'
+         *       404:
+         *        $ref: '#/components/responses/NotFoundError'
          */
         this.router.post('/login', validate(LoginSchema), this.authController.login.bind(this.authController))
     }
